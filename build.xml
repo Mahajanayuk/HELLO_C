@@ -1,60 +1,17 @@
-<project name="HelloWorld" basedir="." default="main">
-
-    <property name="src.dir"     value="src"/>
-    <property name="src_dir" location="./src"/>
-   
-    <property name="bin_dir" location="./bin"/>  
-    <property name="build.dir"   value="build"/>
-    <property name="classes.dir" value="${build.dir}/classes"/>
-    <property name="jar.dir"     value="${build.dir}/jar"/>
-
-    <property name="main-class"  value="oata.HelloWorld"/>
-
-
-
-    <target name="clean">
-        <delete dir="${build.dir}"/>
-    </target>
-    
-     <target name="Cleanup">
-         <delete dir="${build.dir}"/>
-        <delete verbose="true">
-            <fileset dir="${bin_dir}">                
-                <include name="*.class"/>        
-            </fileset>
-        </delete>
-    </target>
-    
-    <target name="BuildProject">
-        <mkdir dir="${bin_dir}"/>
-        <javac destdir="${bin_dir}" verbose="true">            
-            <src>
-                <pathelement location="${src_dir}"/>
-                
-            </src>                
-        </javac>
-    </target>
-    
+<?xml version="1.0"?>
+<project name="hello" default="compile">
+    <taskdef resource="cpptasks.tasks"/>
     <target name="compile">
-        <mkdir dir="${classes.dir}"/>
-        <javac srcdir="${src_dir}" destdir="${classes.dir}"/>
+        <cc outfile="main" objdir="obj" outtype="executable">
+            <fileset dir="./" includes="*.cpp"/>
+            <compiler id="Linuxgcc" name="g++">
+                <compilerarg value="-fPIC"/>
+            </compiler>
+            <linker id="LinuxLinker" name="g++" libtool="true">
+                <linkerarg value="-g" if="debug"/>
+                <linkerarg value="-fPIC"/>
+                <libset libs="stdc++"/>
+            </linker>
+        </cc>
     </target>
-
-    <target name="jar" depends="compile">
-        <mkdir dir="${jar.dir}"/>
-        <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
-            <manifest>
-                <attribute name="Main-Class" value="${main-class}"/>
-            </manifest>
-        </jar>
-    </target>
-
-    <target name="run" depends="jar">
-        <java jar="${jar.dir}/${ant.project.name}.jar" fork="true"/>
-    </target>
-
-    <target name="clean-build" depends="clean,jar"/>
-
-    <target name="main" depends="clean,run"/>
-
 </project>
