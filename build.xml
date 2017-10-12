@@ -1,7 +1,9 @@
 <project name="HelloWorld" basedir="." default="main">
 
     <property name="src.dir"     value="src"/>
-
+    <property name="src_dir" location="./src"/>
+   
+    <property name="bin_dir" location="./bin"/>  
     <property name="build.dir"   value="build"/>
     <property name="classes.dir" value="${build.dir}/classes"/>
     <property name="jar.dir"     value="${build.dir}/jar"/>
@@ -13,10 +15,29 @@
     <target name="clean">
         <delete dir="${build.dir}"/>
     </target>
-
+    
+     <target name="Cleanup">
+         <delete dir="${build.dir}"/>
+        <delete verbose="true">
+            <fileset dir="${bin_dir}">                
+                <include name="*.class"/>        
+            </fileset>
+        </delete>
+    </target>
+    
+    <target name="BuildProject">
+        <mkdir dir="${bin_dir}"/>
+        <javac destdir="${bin_dir}" verbose="true">            
+            <src>
+                <pathelement location="${src_dir}"/>
+                
+            </src>                
+        </javac>
+    </target>
+    
     <target name="compile">
         <mkdir dir="${classes.dir}"/>
-        <javac srcdir="${src.dir}" destdir="${classes.dir}"/>
+        <javac srcdir="${src_dir}" destdir="${classes.dir}"/>
     </target>
 
     <target name="jar" depends="compile">
