@@ -18,6 +18,7 @@
     <target name="compile">
         <mkdir dir="${classes.dir}"/>
         <mkdir dir="${src.dir}"/>
+        <mkdir dir="${target.dir}"/>
         <javac srcdir="${src.dir}" destdir="${classes.dir}"/>
     </target>
 
